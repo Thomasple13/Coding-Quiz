@@ -1,0 +1,28 @@
+body{
+    background-color:white;
+    color: black;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.start-screen{
+    height: 60vh;
+    margin: 0%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-card{
+    text-align: center;
+    background-color: #45F0DF;
+    padding: 50px;
+    border-radius: 50px;
+    width: 100vw;
+    max-width: 500px;
+    opacity: .8;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+}
