@@ -4,7 +4,7 @@ let startScreenEl = document.querySelector('.start-screen')
 let quizScreenEl = document.querySelector('.quiz-screen')
 let resultScreenEl = document.querySelector('.result-screen')
 let highScoreScreenEl = document.querySelector('.highscore-screen')
-let timeoutSceen = document.querySelector('.time-up')
+let timeoutScreen = document.querySelector('.time-up')
 let questionEl = document.querySelector('.question')
 let choiceA = document.querySelector('#answer-button-a')
 let choiceB = document.querySelector('#answer-button-b')
@@ -17,17 +17,18 @@ let highscoreList = document.querySelector('#highscore-list')
 let scoreButton = document.querySelector('#display-score')
 let scoreText = document.querySelector('.score-text')
 let resetButtonEl = document.querySelector('.reset-button')
+let navHighscores = document.querySelector('.navHighscore')
 
 let score = 0
 let timeLeft = 60
 let choice = ''
 let currentQuestion = 0
 let pause = false
-let timeInterval
+let timeInterval;
 
 function reset(){
   score = 0
-  timeLeft = 60
+  timeLeft = 10
   choice = ''
   currentQuestion = 0
   pause = false
@@ -53,7 +54,7 @@ const quiz = [
 ]
   //Function that starts timer countdown
 function countdown() {
-    var timeInterval = setInterval(function () {
+    timeInterval = setInterval(function () {
     if (pause){
       return
     }
@@ -64,8 +65,8 @@ function countdown() {
     } else {
       timerEl.textContent = '';
       clearInterval(timeInterval);
-      timeoutSceen.style.display = 'block'
       hideScreen()
+      timeoutScreen.style.display = 'flex'
     }
   }, 1000);
 }
@@ -86,7 +87,7 @@ function checkAnswer(choice){
     score++
   } else{
     choiceOutcome.textContent = "Incorrect!"
-    timeLeft -= 5
+    timeLeft = Math.max(timeLeft - 5, 0)
     timerEl.textContent = timeLeft + ' seconds remaining';
     score --
   }
@@ -94,39 +95,48 @@ function checkAnswer(choice){
   currentQuestion ++
   if(currentQuestion < quiz.length){
     setTimeout(()=>{
+      if(timeLeft === 0){
+        quizDone()
+        resetAnswerEl()
+      }
       pause = false
       resetAnswerEl()
       displayQuiz()
     },2000)
   }else{
     setTimeout(()=>{
+      if(timeLeft === 0){
+        quizDone()
+        resetAnswerEl()
+      }
       pause = false
       quizDone()
+      resetAnswerEl()
     },2000)
   } 
 }
 
 function updateAnswerEl(){
   const correctAnswer = quiz[currentQuestion].correctAnswer
-  choiceA.className = "answer-button wrong"
-  choiceB.className = "answer-button wrong"
-  choiceC.className = "answer-button wrong"
-  choiceD.className = "answer-button wrong"
-  document.getElementById(`answer-button-${correctAnswer}`).className ="answer-button right"
+  choiceA.className = "answer-button btn wrong"
+  choiceB.className = "answer-button btn wrong"
+  choiceC.className = "answer-button btn wrong"
+  choiceD.className = "answer-button btn wrong"
+  document.getElementById(`answer-button-${correctAnswer}`).className ="answer-button btn right"
 }
 
 function resetAnswerEl(){
-  choiceA.className = "answer-button"
-  choiceB.className = "answer-button"
-  choiceC.className = "answer-button"
-  choiceD.className = "answer-button"
+  choiceA.className = "answer-button btn"
+  choiceB.className = "answer-button btn"
+  choiceC.className = "answer-button btn"
+  choiceD.className = "answer-button btn"
   choiceOutcome.textContent = ""
 }
 
 function quizDone() {
   clearInterval(timeInterval);
   quizScreenEl.style.display = 'none'
-  resultScreenEl.style.display = 'block'
+  resultScreenEl.style.display = 'flex'
   scoreText.textContent = (`Your Score is: ${score}`)
 }
 
@@ -137,52 +147,75 @@ function hideScreen(){
   resultScreenEl.style.display = 'none'
 }
 
+
+
 // Event listeners for Buttons
 startEl.addEventListener("click",()=>{
     reset()
     timerEl.textContent = timeLeft + ' seconds remaining';
     countdown()
     startScreenEl.style.display = 'none'
-    quizScreenEl.style.display = 'block'
+    quizScreenEl.style.display = 'flex'
     displayQuiz()
+    navHighscores.textContent = ''
 })
 
 initialSubmitBtn.addEventListener("click",()=>{
   resultScreenEl.style.display = 'none'
-  highScoreScreenEl.style.display = 'block'
+  highScoreScreenEl.style.display = 'flex'
   let li = document.createElement("li")
-  let name = (`${initials.value} Score:${score}`)
+  let name = (`${initials.value || 'Anonymous'} Score:${score}`)
   li.append(name)
   highscoreList.append(li)
 })
 
 scoreButton.addEventListener('click',()=>{
-  resultScreenEl.style.display = 'block'
-  timeoutSceen.style.display = 'none'
+  resultScreenEl.style.display = 'flex'
+  scoreText.textContent = (`Your Score is: ${score}`)
+  timeoutScreen.style.display = 'none'
 })
 
 resetButtonEl.addEventListener('click', ()=>{
   reset()
-  startScreenEl.style.display = 'block'
+  startScreenEl.style.display = 'flex'
   highScoreScreenEl.style.display = 'none'
+  navHighscores.textContent = 'View Highscores'
+})
+
+//Nav Highscore
+navHighscores.addEventListener('click',()=>{
+  hideScreen()
+  highScoreScreenEl.style.display = 'flex'
 })
 
 // Event Listeners for Answer choices
 choiceA.addEventListener("click", ()=>{
+  if(pause){
+    return
+  }
   choice = 'a'
   checkAnswer(choice)
 })
 
 choiceB.addEventListener("click", ()=>{
+  if(pause){
+    return
+  }
   choice = 'b'
   checkAnswer(choice)
 
 })
 choiceC.addEventListener("click", ()=>{
+  if(pause){
+    return
+  }
   choice = 'c'
   checkAnswer(choice)
 })
 choiceD.addEventListener("click", ()=>{
+  if(pause){
+    return
+  }
   choice = 'd'
   checkAnswer(choice)
 })

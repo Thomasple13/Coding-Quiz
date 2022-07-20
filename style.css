@@ -1,31 +1,56 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body{
     background-color:white;
     color: black;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
-}
-
-.start-screen{
-    height: 60vh;
-    margin: 0%;
     display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.title-card{
-    text-align: center;
-    background-color: #45F0DF;
-    padding: 50px;
-    border-radius: 50px;
-    width: 100vw;
-    max-width: 500px;
-    opacity: .8;
+    flex-direction: column;
+    gap: 100px;
+    padding: 10px;
 }
 
 nav{
     display: flex;
     justify-content: space-between;
 }
+
+.navHighscore{
+    text-decoration: underline;
+    color: dodgerblue;
+}
+
+.navHighscore:hover{
+    cursor: pointer;
+}
+
+.countdown{
+    text-align: end;
+}
+
+.screen{
+    display: flex;
+    justify-content: center;
+}
+
+.title-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+    padding: 70px 10px;
+    background-color: #45F0DF;
+    border-radius: 50px;
+    opacity: .8;
+    width: 100%;
+}
+
 
 .quiz-screen {
     display: none;
@@ -45,8 +70,52 @@ nav{
 
 .wrong{
     background-color: red;
+    padding: 5px 20px;
+    margin: 20px;
+    border-radius: 30px;
+    width: 80%;
 }
 
 .right{
     background-color: green;
+    padding: 5px 20px;
+    margin: 20px;
+    border-radius: 30px;
+    width: 80%;
+}
+
+.btn{
+    padding: 5px 20px;
+    margin: 20px;
+    border-radius: 30px;
+    width: 80% 
+}
+
+.btn:hover{
+    background-color: aqua;
+}
+
+.initials{
+    width: 80%;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+}
+
+@media screen and (min-width: 426px){
+    .btn{
+        width: 50%;
+    }
+    .title-card{
+        width: 60%
+    }
+}
+
+@media screen and (min-width: 1440px){
+    .btn{
+        width: 50%;
+    }
+    .title-card{
+        width: 40%
+    }
 }
