@@ -28,7 +28,7 @@ let timeInterval;
 
 function reset(){
   score = 0
-  timeLeft = 10
+  timeLeft = 60
   choice = ''
   currentQuestion = 0
   pause = false
@@ -41,7 +41,7 @@ const quiz = [
     b: "for (i = 0; i <= 5)",
     c:"for i = 1 to 5",
     d: "for (i = 0; i <= 5; i++)",
-    correctAnswer: "a"
+    correctAnswer: "d"
   },
   {
     question: "Which of the following is NOT a Javascript datatype?",
@@ -49,6 +49,30 @@ const quiz = [
     b: "String",
     c: "Undefined",
     d: "NoneType",
+    correctAnswer: "d"
+  },
+  {
+    question: "What does CSS stand for?",
+    a: "Character Style Standards",
+    b: "Cascading Style Sheets",
+    c: "Character Style Sheets",
+    d: "Crescent Style Standards",
+    correctAnswer: "b"
+  },
+  {
+    question: "Which is an invalid variable name?",
+    a: "MyAwesomeVariable",
+    b: "_mySt_ring",
+    c: "1direction",
+    d: "helloString01",
+    correctAnswer: "c"
+  },
+  {
+    question: "Which is not a way to make (x=1) have the value of 2?",
+    a: "x + 1",
+    b: "x++",
+    c: "x += 1",
+    d: "x + 1",
     correctAnswer: "d"
   }
 ]
