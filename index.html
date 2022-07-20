@@ -31,10 +31,10 @@
             <div class="title">
                 <h1 class="question"></h1>
                 <div class="answer-buttons">
-                    <button class="answer-button" id = 'answer-button-a'>A</button>
-                    <button class="answer-button" id = 'answer-button-b'>B</button>
-                    <button class="answer-button" id = 'answer-button-c'>C</button>
-                    <button class="answer-button" id = 'answer-button-d'>D</button>
+                    <button class="answer-button" id='answer-button-a'></button>
+                    <button class="answer-button" id='answer-button-b'></button>
+                    <button class="answer-button" id='answer-button-c'></button>
+                    <button class="answer-button" id='answer-button-d'></button>
                 </div>
                 <p class ="choice-outcome"></p>
             </div> 
@@ -45,17 +45,27 @@
         <div class="title-card">
             <div class="title">
                 <h1>All Done!</h1>
-                <p>Your final score is:</p>
-                <input type="text" value="Please enter your initials">
-                <button type="submit">Submit</button>
+                <p class="score-text"></p>
+                <input class='initials' type="text" placeholder="Please enter your initials">
+                <button id="initial-submit" type="submit">Submit</button>
             </div>
         </div>
     </div>
+
+    <section class="time-up">
+        <div class="title-card">
+            <h1>Time's Up!</h1>
+            <p>You ran out of time.</p>
+            <button type="button" id="display-score">Score</button>
+        </div>
+    </section>
 
     <div class="highscore-screen">
         <div class="title-card">
             <div class="title">
                 <h1>Highscores</h1>
+                <ul id="highscore-list"></ul>
+                <button class="reset-button">Restart Quiz</button>
             </div>
         </div>
     </div>

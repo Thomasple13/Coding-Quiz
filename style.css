@@ -39,3 +39,14 @@ nav{
     display: none;
 }
 
+.time-up{
+    display: none;
+}
+
+.wrong{
+    background-color: red;
+}
+
+.right{
+    background-color: green;
+}

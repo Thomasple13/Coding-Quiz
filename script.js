@@ -3,23 +3,34 @@ let startEl = document.querySelector('.start-button')
 let startScreenEl = document.querySelector('.start-screen')
 let quizScreenEl = document.querySelector('.quiz-screen')
 let resultScreenEl = document.querySelector('.result-screen')
+let highScoreScreenEl = document.querySelector('.highscore-screen')
+let timeoutSceen = document.querySelector('.time-up')
 let questionEl = document.querySelector('.question')
 let choiceA = document.querySelector('#answer-button-a')
 let choiceB = document.querySelector('#answer-button-b')
 let choiceC = document.querySelector('#answer-button-c')
 let choiceD = document.querySelector('#answer-button-d')
 let choiceOutcome = document.querySelector(".choice-outcome")
+let initials = document.querySelector('.initials')
+let initialSubmitBtn = document.querySelector("#initial-submit")
+let highscoreList = document.querySelector('#highscore-list')
+let scoreButton = document.querySelector('#display-score')
+let scoreText = document.querySelector('.score-text')
+let resetButtonEl = document.querySelector('.reset-button')
 
 let score = 0
 let timeLeft = 60
 let choice = ''
 let currentQuestion = 0
+let pause = false
+let timeInterval
 
 function reset(){
   score = 0
   timeLeft = 60
   choice = ''
   currentQuestion = 0
+  pause = false
 }
 
 const quiz = [
@@ -29,7 +40,7 @@ const quiz = [
     b: "for (i = 0; i <= 5)",
     c:"for i = 1 to 5",
     d: "for (i = 0; i <= 5; i++)",
-    correctAnswer: "d"
+    correctAnswer: "a"
   },
   {
     question: "Which of the following is NOT a Javascript datatype?",
@@ -43,21 +54,90 @@ const quiz = [
   //Function that starts timer countdown
 function countdown() {
     var timeInterval = setInterval(function () {
-    if (timeLeft > 1) {
+    if (pause){
+      return
+    }
+    if (timeLeft >= 1) {
       // Set the `textContent` of `timerEl` to show the remaining seconds
       timeLeft--;
       timerEl.textContent = timeLeft + ' seconds remaining';
-    } else if (timeLeft === 1) {
-      timeLeft--;
-      timerEl.textContent = timeLeft + ' second remaining';
     } else {
       timerEl.textContent = '';
       clearInterval(timeInterval);
-      quizDone();
+      timeoutSceen.style.display = 'block'
+      hideScreen()
     }
   }, 1000);
 }
 
+
+function displayQuiz (){
+  questionEl.textContent = quiz[currentQuestion].question
+  choiceA.textContent = quiz[currentQuestion].a
+  choiceB.textContent = quiz[currentQuestion].b
+  choiceC.textContent = quiz[currentQuestion].c
+  choiceD.textContent = quiz[currentQuestion].d
+}
+
+function checkAnswer(choice){
+  pause = true
+  if(quiz[currentQuestion].correctAnswer === choice){
+    choiceOutcome.textContent = "Correct!"
+    score++
+  } else{
+    choiceOutcome.textContent = "Incorrect!"
+    timeLeft -= 5
+    timerEl.textContent = timeLeft + ' seconds remaining';
+    score --
+  }
+  updateAnswerEl()
+  currentQuestion ++
+  if(currentQuestion < quiz.length){
+    setTimeout(()=>{
+      pause = false
+      resetAnswerEl()
+      displayQuiz()
+    },2000)
+  }else{
+    setTimeout(()=>{
+      pause = false
+      quizDone()
+    },2000)
+  } 
+}
+
+function updateAnswerEl(){
+  const correctAnswer = quiz[currentQuestion].correctAnswer
+  choiceA.className = "answer-button wrong"
+  choiceB.className = "answer-button wrong"
+  choiceC.className = "answer-button wrong"
+  choiceD.className = "answer-button wrong"
+  document.getElementById(`answer-button-${correctAnswer}`).className ="answer-button right"
+}
+
+function resetAnswerEl(){
+  choiceA.className = "answer-button"
+  choiceB.className = "answer-button"
+  choiceC.className = "answer-button"
+  choiceD.className = "answer-button"
+  choiceOutcome.textContent = ""
+}
+
+function quizDone() {
+  clearInterval(timeInterval);
+  quizScreenEl.style.display = 'none'
+  resultScreenEl.style.display = 'block'
+  scoreText.textContent = (`Your Score is: ${score}`)
+}
+
+
+function hideScreen(){
+  startScreenEl.style.display = 'none'
+  quizScreenEl.style.display = 'none'
+  resultScreenEl.style.display = 'none'
+}
+
+// Event listeners for Buttons
 startEl.addEventListener("click",()=>{
     reset()
     timerEl.textContent = timeLeft + ' seconds remaining';
@@ -67,40 +147,27 @@ startEl.addEventListener("click",()=>{
     displayQuiz()
 })
 
-function displayQuiz (){
-    questionEl.textContent = quiz[currentQuestion].question
-    choiceA.textContent = quiz[currentQuestion].a
-    choiceB.textContent = quiz[currentQuestion].b
-    choiceC.textContent = quiz[currentQuestion].c
-    choiceD.textContent = quiz[currentQuestion].d
-}
+initialSubmitBtn.addEventListener("click",()=>{
+  resultScreenEl.style.display = 'none'
+  highScoreScreenEl.style.display = 'block'
+  let li = document.createElement("li")
+  let name = (`${initials.value} Score:${score}`)
+  li.append(name)
+  highscoreList.append(li)
+})
 
-function checkAnswer(choice){
-  if(quiz[currentQuestion].correctAnswer === choice){
-    choiceOutcome.textContent = "Correct!"
-    score++
-    console.log('this is working')
-  } else{
-    choiceOutcome.textContent = "Incorrect!"
-    timeLeft -= 5
-    timerEl.textContent = timeLeft + ' seconds remaining';
-    score --
-  }
-  currentQuestion ++
-  if(currentQuestion < quiz.length){
-    displayQuiz()
-  }else{
-    quizDone()
-  }
-}
+scoreButton.addEventListener('click',()=>{
+  resultScreenEl.style.display = 'block'
+  timeoutSceen.style.display = 'none'
+})
 
-function quizDone() {
-  console.log('quiz done')
-  quizScreenEl.style.display = 'none'
-  resultS
-}
+resetButtonEl.addEventListener('click', ()=>{
+  reset()
+  startScreenEl.style.display = 'block'
+  highScoreScreenEl.style.display = 'none'
+})
 
-
+// Event Listeners for Answer choices
 choiceA.addEventListener("click", ()=>{
   choice = 'a'
   checkAnswer(choice)
