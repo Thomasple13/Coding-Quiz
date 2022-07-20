@@ -26,3 +26,16 @@ nav{
     display: flex;
     justify-content: space-between;
 }
+
+.quiz-screen {
+    display: none;
+}
+
+.result-screen{
+    display: none;
+}
+
+.highscore-screen{
+    display: none;
+}
+
